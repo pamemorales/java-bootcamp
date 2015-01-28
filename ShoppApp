@@ -1,0 +1,25 @@
+public class Shopp {
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		AudioPlayer reprod = new AudioPlayer();
+		Shopping shop = new Shopping();
+					
+		try {
+			reprod.AbrirFichero("/home/pamela/Música/tema.mp3");
+			reprod.Play();
+			} catch (Exception ex) {
+		System.out.println("Error: " + ex.getMessage());
+			}
+		shop.loadItemForSale();
+		shop.loadItemOffer();
+		shop.displayOptions();
+		if(!shop.itemSale.isEmpty())
+			shop.displayTypePay();
+		try {
+		reprod.Stop();
+		} catch (Exception ex) {
+		System.out.println("Error: " + ex.getMessage());
+		}
+	}
+}
