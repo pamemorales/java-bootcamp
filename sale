@@ -1,0 +1,45 @@
+import java.util.ArrayList;
+import java.util.List;
+
+
+
+public class Sales {
+	List<Items> itemSale = new ArrayList<Items>();
+	double total = 0;
+	
+	//busca el item para vender 
+	public Items loadSale(List<Items> itemForSale, int option) {
+		Items item = new Items();
+		
+		try{
+		
+		item = itemForSale.get(option-1);
+		return item;		
+			}
+		catch (Exception e){
+			
+			System.out.println("No se encontro el item");
+		
+			return item = null;
+			}
+		}
+	
+	//obtiene el precio del item y lo devuelve
+	public double getTotal (List<Items> itemForSale,int option){
+		double subtotal = 0;
+		Items item = new Items();
+		
+		try{
+			item = itemForSale.get(option -1);
+			subtotal = item.getPrice();
+			return subtotal;		
+			}
+		catch (Exception e){
+			
+			System.out.println("No se encontro el item");
+		
+			return 0.0;
+			}
+				
+		}
+}
