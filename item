@@ -1,0 +1,86 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+
+public class Items {
+	String name = "";
+	double price = 0, offerPrice = 0;
+	List<Items> offerL = new ArrayList<Items>();
+	
+	//constructor
+	public Items (String name, double price) {
+		this.name = name;
+		this.price = price;
+		
+	}
+	
+	public Items (String name, double price, double offerPrice) {
+		this.name = name;
+		this.price = price;
+		this.offerPrice = offerPrice;
+		
+	}
+	
+	//constructor 
+	public Items() {
+		// TODO Auto-generated constructor stub
+	}
+	//obtiene el nombre
+	public String getName(){
+		return name;
+	}
+	//obtiene el precio
+	public double getPrice() {
+		return price;
+	}
+	//fija el precio de oferta del item
+	public void setOfferPrice(double oPrice){
+		this.offerPrice = oPrice;
+	}
+	
+	//obtiene el precio de oferta del item
+	public double getOfferPrice (){
+		return offerPrice;
+	}
+	
+	
+	public void displayItems(List<Items> itemSale) {
+		int i = 0;
+		Iterator<Items> itrItems = itemSale.iterator();
+		while(itrItems.hasNext()){
+			i ++;
+			Items item = itrItems.next();
+			System.out.println(i + "- " + item.getName()  + "         $" + item.getPrice());
+		}
+		
+	}
+	
+		public void displayOffers(List<Items> offer) {
+			int i = 0;
+			Iterator<Items> itrItems = offer.iterator();
+			System.out.println("Precio:                     Oferta");
+			while(itrItems.hasNext()){
+				i ++;
+				Items item = itrItems.next();
+				System.out.println(i + "- " + item.getName()  + "         $" + item.getOfferPrice());
+			}
+		}
+		
+		public Items loadOffer(List<Items> itemForSale, int option, double oPrice) {
+			Items item = new Items();
+						
+			try{
+				item = itemForSale.get(option -1);
+				item.setOfferPrice(oPrice);
+				return item;		
+				}
+			catch (Exception e){
+				
+				System.out.println("No se encontro el item");
+				return item = null;
+				}
+				
+			}
+}
+
