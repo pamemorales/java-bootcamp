@@ -1,0 +1,107 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
+
+
+public class Pays {
+	double total = 0;
+	int counter = 0;
+	double a=0, b=0;
+	//incrementa el contador despues de cada transaccion
+	public void setCounter(){
+		this.counter ++;
+	}
+	
+	//constructor
+	public Pays (){
+		
+	}
+	
+	//obtiene el descuento
+	public double getDiscount(double subTotal, List<Items> itemSale){
+		Iterator<Items> itrItems = itemSale.iterator();
+		while(itrItems.hasNext()){
+			Items item = itrItems.next();		//busca en el array de items vendido el mas caro
+			b = item.getPrice();
+			if(a < b)
+				a = b;
+			}
+			total = subTotal - (a *0.9);		//obtengo el 90% del valor del mas caro y se lo resto al total
+			return total;
+		}
+}
+
+class CreditCards extends Pays {
+	String cardName = "";
+	float creditNumber;
+	
+	//constructor
+	public CreditCards(){
+	}
+	
+	//carga los datos de la tarjeta de credito
+	public void setDataCreditCard () {
+		System.out.println("Ingrese el nombre de la tarjeta de credito");
+		Scanner sc = new Scanner(System.in);
+		this.cardName = sc.nextLine();
+		System.out.println("Ingrese el número de la tarjeta: ");
+		this.creditNumber = sc.nextFloat();
+		sc.nextLine();
+		counter ++;
+		sc.close();
+	}
+	
+	//obtiene el descuento del 10% en el total de la compra
+	public double getDiscount(double subtotal) {
+		this.total = subtotal - (subtotal * 0.1);
+		return total;
+		
+	}
+}
+
+class Paypals extends Pays {
+	String email = "", passw = "";
+	
+	//constructor
+	public Paypals (){
+		
+	}
+	
+	//carga los datos del paypal
+	
+	public void setDataPaypal () {
+		
+		System.out.println("Ingrese el e-mail");
+		Scanner sc = new Scanner(System.in);
+		this.email = sc.nextLine();
+		System.out.println("Ingrese la contraseña: ");
+		this.passw = sc.nextLine();
+		counter ++;
+		sc.close();
+	}
+	
+	//obtiene el descuento 	
+	public double getDiscount (double subtotal, ArrayList<Items> itemSale){
+		double a = 0, b = 0;
+		int i= 0;
+		Iterator<Items> itrItems = itemSale.iterator();			//busca el item mas barato
+		while(itrItems.hasNext()){
+			Items item = itrItems.next();
+				if(i >= 1){
+					b = item.getPrice();
+					if (a > b )
+						a = b;
+				}
+			else {
+				a = item.getPrice();
+				i++;
+			}
+		}
+		this.total = subtotal - a;				
+		return total;
+	}
+	
+}
+
+
