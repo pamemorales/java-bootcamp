@@ -1,0 +1,35 @@
+private Sales sale;
+	private Pays pay;
+	private CreditCards creditCard;
+
+	@Before
+	public void setUp() throws Exception {
+		item = new Items("zapatilla", 324.5);
+		itemSale.add(item);
+					
+	}
+
+	//probando cuando se vende un producto
+	@Test
+	public void testGetTotal() {
+		sale = new Sales();
+		assertEquals(324.5, (sale.getTotal(itemSale,1)), 1e-3);
+		
+	}
+	@Test
+	public void testGetDiscountCreditCard (){
+		creditCard = new CreditCards();
+		assertEquals(315.00, (creditCard.getDiscount(350.00)), 1e-3);
+		
+	}
+	
+	@Test
+	public void testGetDiscountCash () {
+		item = new Items("zapatillas cleo", 254.0);
+		itemSale.add(item);
+		pay = new Pays();
+		assertEquals(32.45, pay.getDiscount(324.5, itemSale), 1e-3);
+	}
+	
+
+}
