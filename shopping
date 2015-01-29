@@ -1,0 +1,146 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Shopping {
+
+	
+		int x = 0, option = 0;
+		String in = "";
+		double price = 0, total= 0, subTotal = 0;
+		Scanner sc = new Scanner(System.in);
+		Sales sale = new Sales();
+		Items item = new Items();
+		List<Items> itemForSale = new ArrayList<Items>();	//declaro un array para cargar los items a vender
+		List<Items> itemSale = new ArrayList<Items>();		//declaro un array para cargar los items vendidos
+		List<Items> offerL = new ArrayList<Items>();		//declaro un array para cargar las ofertas
+		List<Notifications> notif = new ArrayList<Notifications>();
+
+		public void loadItemForSale(){
+		Items cleo = new Items("zandalias Cleo", 357.50);
+		Items valen = new Items("zandalias Valen", 475.75);
+		Items zaira = new Items("zapatillas zaira", 357.85);
+		Items sara = new Items("zapatillas sara", 489.99);
+		Items bizcio = new Items("ojotas bizcio", 253.99);
+		
+		this.itemForSale.add(cleo);
+		this.itemForSale.add(valen);
+		this.itemForSale.add(zaira);
+		this.itemForSale.add(sara);
+		this.itemForSale.add(bizcio);
+			
+		}
+		
+		public void loadItemOffer(){
+			Items cleo = new Items("zandalias Cleo", 357.50, 300.00);
+			Items valen = new Items("zandalias Valen", 475.75, 0.0);
+			Items zaira = new Items("zapatillas zaira", 357.85, 325.00);
+			Items sara = new Items("zapatillas sara", 489.99, 0.0);
+			Items bizcio = new Items("ojotas bizcio", 253.99, 0.0);
+			
+			this.offerL.add(cleo);
+			this.offerL.add(valen);
+			this.offerL.add(zaira);
+			this.offerL.add(sara);
+			this.offerL.add(bizcio);
+				
+			}
+				
+	public  void displayOptions(){	
+		//int value;
+		System.out.println("Bienvenido, que desea elegir:\n 1 - Ventas, "		// elige entre ventas o cargar ofertas
+				+ "\n 2 - Cargar Ofertas \n 3- Mostrar ofertas \n " + "Ingrese n° de opción: \n");
+		x = sc.nextInt();
+		sc.nextLine();											
+		switch (x){	
+		case 1: 
+				in = "si";
+				while (in.equalsIgnoreCase("si")){						
+					item.displayItems(itemForSale);					//muestro los items para vender
+					System.out.println("Elija un número de item  ");
+					option = sc.nextInt();
+					sc.nextLine();
+					itemSale.add(sale.loadSale(itemForSale, option));		//cargo el producto a vender
+					subTotal = subTotal + sale.getTotal(itemForSale, option);		//obtengo el subtotal de la venta
+					System.out.println("El total de la compra es: " + subTotal);
+					System.out.println("Agregar otro item a la compra: si/no ");
+					in = sc.nextLine();
+				}
+				//return value = 1;
+				break;
+		case 2: 											// si eligio cargar ofertas
+				Items offerItem = new Items();	
+				in = "si";
+				while(in.equalsIgnoreCase("si")){
+				item.displayItems(itemForSale);								//muestra los items que hay
+				System.out.println("Ingrese el número del item para oferta");
+				option = sc.nextInt();
+				sc.nextLine();
+				System.out.println("Ingrese el precio para la oferta");
+				price = sc.nextDouble();
+				sc.nextLine();
+				offerItem = item.loadOffer(itemForSale, option, price);
+				offerL.add(offerItem);										//carga la oferta al array
+				System.out.println("Desea agregar mas ofertas? si/no");
+				in = sc.nextLine();
+				in = in.toLowerCase();
+				Notifications notifi = new Notifications("nuevo item cargado", offerItem);
+				notif.add(notifi);
+				}
+				
+				//return value = 2;
+				break;
+		case 3:
+				item.displayOffers(offerL);
+				break;
+				//return value = 3;
+		default:
+				//return value = 4;
+				System.out.println("Ingrese un numero del 1 al 3");
+				break;
+				}
+		
+			}
+	public void displayTypePay(){
+		System.out.println("Ingrese el modo de pago: 1 Efectivo \n  2- Tarjeta  \n 3 - Paypal \n");		//elijo la forma de pago
+		option = sc.nextInt();
+		sc.nextLine();
+		if(option == 1){
+			Pays pay = new Pays();							// inicio una instancia de pago
+			total = pay.getDiscount(subTotal, itemSale);	//obtengo el descuento para esta forma de pago
+			pay.setCounter();								// llamo a setCounter para que incremente el contador de transaccion
+			
+			System.out.println("Obtuvo un descuento en su compra el total es: " + total);	//muestro el total de la venta
+			Notifications notifi = new Notifications("nuevo venta", pay, total);
+			notif.add(notifi);
+		}
+		else {
+			if(option == 2){
+				CreditCards credit = new CreditCards();		// inicio una instancia de pago
+				credit.setDataCreditCard();					//llama al setData para que cargue los datos de la tarjeta
+				total = credit.getDiscount(subTotal);		//obtengo el descuento para esta forma de pago
+				System.out.println("El total es: " + total + " obtuvo 10% de descuento por su compra");
+				Notifications notifi = new Notifications("nuevo venta", credit, total);
+				notif.add(notifi);
+			}
+		else 
+			if(option == 3){
+			Paypals paypal =new Paypals();				// inicio una instancia de pago
+			paypal.setDataPaypal();						//llama al setData para que cargue los datos del paypal
+			total = paypal.getDiscount(subTotal, itemSale);
+			System.out.println("El total de su compra es:" + total + " obtuvo un descuento en su compra" );
+			Notifications notifi = new Notifications("nueva venta", paypal, total);
+			notif.add(notifi);
+			}
+			else {
+				System.out.println("Ingrese una opción del 1 al 3");
+				option = sc.nextInt();
+				sc.nextLine();
+			}
+		}
+	
+		
+		}
+		
+		
+	}
